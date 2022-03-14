@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>monaco editor</title>
+  <link rel="stylesheet" data-name="vs/editor/editor.main"
+    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+  <script>
+    function run() {
+
+      monaco.languages.typescript.javascriptDefaults.addExtraLib(`
+        declare function init(height: number, width: number): void;
+        declare function move(state: string[]): number;`, 'snek.d.ts');
+
+      window.EDITOR = monaco.editor.create(document.getElementById('container'), {
+        value: localStorage.getItem("snek-code"),
+        language: 'javascript',
+        theme: 'vs-dark'
+      });
+
+      let saveDebounce = -1;
+
+      EDITOR.getModel().onDidChangeContent(function () {
+        clearTimeout(saveDebounce);
+        saveDebounce = setTimeout(() => {
+          localStorage.setItem("snek-code", EDITOR.getModel().getValue());
+        }, 5000);
+      });
+
+      window.onresize = function () {
+        EDITOR.layout();
+      }
+    }
+
+    let sim_running;
+
+    function stop_sim() {
+      sim_running = false;
+    }
+
+    let ws;
+
+    function start_sim(do_print) {
+      sim_running = true;
+      let src = "function __target_code__() {" + EDITOR.getModel().getValue() + "; return [init, move];}";
+      eval(src);
+      let [init, move] = __target_code__();
+
+      if (ws) {
+        ws.close();
+      }
+
+      ws = new WebSocket("ws://armageddon.magija.rs:8080/snek");
+
+      let gameWidth, gameHeight;
+
+      let totalScore = 0;
+      let totalGames = 0;
+
+      document.getElementById("score-output").innerText = "-";
+      document.getElementById("game-output").innerText = "-";
+
+      function draw_board(rows) {
+        let output = "+";
+        for (let i = 0; i < gameWidth; i++) {
+          output += '-';
+        }
+        output += "+\n"
+        for (let i = 0; i < rows.length; i++) {
+          output += "|";
+          output += rows[i];
+          output += "|\n";
+        }
+
+        output += "+";
+        for (let i = 0; i < gameWidth; i++) {
+          output += '-';
+        }
+        output += "+\n"
+
+        document.getElementById("snek-output").innerText = output;
+      }
+
+      ws.onopen = function () {
+        ws.send("HELO name");
+      }
+
+      ws.onmessage = function (ev) {
+        if (!sim_running) {
+          ws.close();
+        }
+        let data = ev.data.split(' ');
+        if (data[0] == "GAME") {
+          gameHeight = Number(data[2]);
+          gameWidth = Number(data[3]);
+
+          init(gameHeight, gameWidth);
+
+        } else if (data[0] == "PLAY") {
+          let rows = data[1].split('\n').splice(1);
+          let res = move(rows);
+
+          if (do_print) {
+            draw_board(rows);
+            setTimeout(() => ws.send("MOVE " + res), 50);
+          } else {
+            ws.send("MOVE " + res)
+          }
+        } else if (data[0] == "DONE") {
+          totalScore += Number(data[1]);
+          totalGames += 1;
+          let avg = totalScore / totalGames;
+          document.getElementById("score-output").innerText = Math.trunc(avg * 100) / 100;
+          document.getElementById("game-output").innerText = totalGames;
+        } else if (data[0] == "BBYE") {
+          ws.close();
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <button onclick="start_sim(true)">Run</button>
+  <button onclick="start_sim(false)">Run but fast</button>
+  <button onclick="stop_sim()">Stop</button>
+  | Average score: <span id="score-output">-</span>
+  | Current game: <span id="game-output">-</span>
+  <div id="container" style="height:400px;width:100%;border:1px solid black;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <script>
+    // Based on https://jsfiddle.net/developit/bwgkr6uq/ which just works but is based on unpkg.com.
+    // Provided by loader.min.js.
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
+    window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+    let proxy = URL.createObjectURL(new Blob([`
+                self.MonacoEnvironment = {
+                    baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+                };
+                importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');`],
+      { type: 'text/javascript' }));
+    require(["vs/editor/editor.main"], run);
+  </script>
+  <pre id="snek-output"></pre>
+</body>
+
+</html>
