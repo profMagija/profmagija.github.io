@@ -13,8 +13,20 @@
         declare function init(height: number, width: number): void;
         declare function move(state: string[]): number;`, 'snek.d.ts');
 
+      let code = localStorage.getItem("snek-code") || `let height, width, last_dir;
+
+function init(h, w) {
+  height = w;
+  width = w;
+  last_dir = 0;
+}
+
+function move(state) {
+  return 0;
+}`;
+
       window.EDITOR = monaco.editor.create(document.getElementById('container'), {
-        value: localStorage.getItem("snek-code"),
+        value: code,
         language: 'javascript',
         theme: 'vs-dark'
       });
