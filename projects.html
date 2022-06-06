@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title>Projects - ProfMagija</title>
+
+    <style>
+        a {
+            color: #0f0;
+        }
+
+        body {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: black;
+        }
+    </style>
+    <script defer data-domain="magija.rs" src="https://plausible.io/js/plausible.js"></script>
+</head>
+
+<body background="stars.png" text="#ffffff">
+
+    <div style="position: fixed; top: 0; left: 0;"><a href="/">&lt;&lt; back home</a></div>
+
+    <div style="background-color: rgba(0, 0, 0, 0.8);">
+        <h1>Some projects I've worked on</h1>
+        <p>
+            Over the years, I've worked on a number of personal or small team projects. Some of them are listed here,
+            sorted in rough order of "polishness". I am excluding for now all the "one-off" projects, for which I will
+            create a separate page at some point.
+        </p>
+
+        <h2>Petničke eSveske (Petnica ePapers) <small><a href="https://esveske.github.io">site</a></small> </h2>
+        <p>An online repository of student papers from Petnica Science Center. This is an unofficial-official digital
+            archive of the otherwise paperback published "Petnica Papers" collection of student papers. On a technical
+            level, the site is a static website generated from an excel sheet using a Makefile & some python scripts,
+            hosted on GitHub Pages.
+        </p>
+
+        <h2>Notify Me <small><a href="https://notify-me.rs">site</a></small> </h2>
+        <p>
+            A website for tracking other websites. I worked on most of the serverless backend infrastructure, build
+            system and some scraping logic. The backend is implemented in Python and runs on Google Cloud
+            Infrastructure, mostly as Cloud Functions and Cloud Runs.
+        </p>
+
+        <h2>This website <small><a href="https://github.com/profMagija/profmagija.github.io">repo</a></small></h2>
+        <p>
+            Born as a love letter to simpler Web 2.0 days in which I started my programming career, this website is both
+            my professional home page, and my personal expression medium. It contains exactly 0 web frameworks, site
+            generators, or content management systems. 100% pure HTML + CSS + JS and animated GIFs, as gods intended.
+        </p>
+
+        <h2>Tree Sitter bindings for DotNET
+            <small><a href="https://github.com/profMagija/dotnet-tree-sitter">repo</a></small>
+        </h2>
+        <p>
+            A thin wrapper for dotnet of the TreeSitter api. This started as a wrapper of just a few functions I needed,
+            but since no official wrapper exists, I decided to just publish it to NuGet.
+        </p>
+
+        <h2>PetitParser for Python
+            <small><a href="https://github.com/profMagija/py-petitparser">repo</a></small>
+        </h2>
+        <p>
+            A port of PetitParser parser combinator library to Python. Based on the Java implementation, with some
+            "artistic liberties" taken when it comes to operator overloading and other meta-programming features Java
+            lacks. These include more idiomatic rule and action specification, using metaclasses.
+        </p>
+
+        <h2>Everything <small><a href="https://github.com/profMagija/everything">repo</a></small></h2>
+        <p>
+            A joke python library which appears to contain every other python library. Born from the <tt>from * import
+                *</tt> python joke, which can now legitimately be written as <tt>from everything import *</tt>. A
+            feature I intend to implement is on-demand package installation when imported, but never got to hacking it
+            out.
+        </p>
+
+        <h2>JavaNET</h2>
+        <p>
+            A Java to DotNET transpiler, that converts JARs to DLLs. Mostly an experiment in static bytecode transpiling
+            that I spent more time on than most other experiments I worked on. Can actually run small JARs without
+            problem, but still has a lot of other issues, including being unable to fully transpile the Java standard
+            library. I may return to it at some point, but right now remains unmaintained.
+        </p>
+    </div>
+
+</body>
+
+</html>
