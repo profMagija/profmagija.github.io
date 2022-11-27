@@ -7,7 +7,6 @@
 
 <body background="stars.png" text="#ffffff">
     <center>
-
         <table width="100%">
             <tr>
                 <td width="300px" rowspan=2>
@@ -29,12 +28,25 @@
                 <td valign=top>
                     <h3>WEBSITE UNDER CONSTRUCTION</h3>
 
-                    Welcome to my personal website. Enjoy your visit.
+                    Welcome to my personal website. Enjoy your visit. 
+                    <p>
+                        <sub><a href="/?3d">enter the multiverse</a></sub>
                 </td>
             </tr>
         </table>
-
-
+            
+    <script>
+        if (location.search == '?3d') {
+            function ff() {
+                document.getElementsByTagName('table')[0].style.transform = `rotate3d(${Math.sin(rrr)}, ${Math.cos(rrr)}, 0, 45deg)`;
+                rrr += 0.03;
+            }
+            rrr = 0;
+            setInterval(ff, 50);
+        }
+        document.getElementsByTagName('center')[0].style.transformStyle = 'preserve-3d';
+        document.getElementsByTagName('center')[0].style.perspective = '100vh';
+    </script>
 </body>
 
 </html>
