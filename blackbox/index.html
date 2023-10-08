@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./out/require.js"></script>
+    <script src="./out/dist.min.js"></script>
+    <script>
+        require(["utils/BlackBoxGen"], function (bbg) {
+            window.BBG = bbg.BlackBoxGen;
+        })
+    </script>
+    <style>
+        table,
+        tr,
+        td {
+            vertical-align: top;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        body {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: black;
+            color: white;
+        }
+
+        #output {
+            color: greenyellow;
+            background-color: black;
+            padding: 10px;
+            width: 600px;
+            height: 800px;
+            overflow-y: scroll;
+            font-family: monospace;
+            white-space-collapse: preserve;
+        }
+    </style>
+    <script>
+        require(["ui/UI"], function (uits) {
+            UI = new uits.UI();
+
+            window.onkeypress = function (ev) {
+                UI.keyPress(ev.key);
+            }
+
+            window.onkeydown = function (ev) {
+                UI.keyDown(ev.key);
+            }
+        });
+
+        function doSaveInput() {
+            localStorage.setItem("beleske", document.getElementById("beleske").value);
+        }
+
+        window.onload = function () {
+            document.getElementById("beleske").value = localStorage.getItem("beleske");
+        }
+
+        window.addEventListener("paste", function (ev) {
+            var text = ev.clipboardData.getData("text/plain");
+            UI.paste(text);
+        })
+    </script>
+</head>
+
+<body>
+    <table width="100%">
+        <tr>
+            <td width="70%">
+                <div id="output"></div>
+            </td>
+            <td width="30%">
+                Izbor kutije: <select id="boxSelect">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select> <br>
+                Šifra: <input type="text" id="boxPassword"> <br>
+                <button onclick="UI.startBlackBox()">Pokreni</button> <br>
+
+                <h3>Beleške</h3>
+                <textarea rows="40" onblur="doSaveInput()" id="beleske"></textarea>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
