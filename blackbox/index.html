@@ -20,14 +20,15 @@
         }
 
         textarea {
-            width: 100%;
+            width: calc(100% - 10px);
         }
 
         body {
             max-width: 900px;
             margin: 0 auto;
             background-color: black;
-            color: white;
+            color: green;
+            font-family: monospace;
         }
 
         #output {
@@ -39,6 +40,33 @@
             overflow-y: scroll;
             font-family: monospace;
             white-space-collapse: preserve;
+        }
+
+        textarea,
+        input,
+        select,
+        button {
+            border: 1px solid green;
+            border-radius: 5px;
+            background-color: black;
+            padding: 5px;
+            color: white;
+        }
+
+        select {
+            width: 100px;
+        }
+
+        table.tt td {
+            padding: 0;
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        .border {
+            border: 1px solid green;
+            padding: 10px;
+            margin: 5px;
         }
     </style>
     <script>
@@ -76,20 +104,38 @@
                 <div id="output"></div>
             </td>
             <td width="30%">
-                Izbor kutije: <select id="boxSelect">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                </select> <br>
-                Šifra: <input type="text" id="boxPassword"> <br>
-                <button onclick="UI.startBlackBox()">Pokreni</button> <br>
+                <div class="border">
+                    <table class="tt">
+                        <tr>
+                            <td>Kutija:</td>
+                            <td>
+                                <select id="boxSelect">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Šifra:</td>
+                            <td><input type="text" id="boxPassword"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button onclick="UI.startBlackBox()">Pokreni</button></td>
+                        </tr>
+                    </table>
 
-                <h3>Beleške</h3>
-                <textarea rows="40" onblur="doSaveInput()" id="beleske"></textarea>
+                </div>
+
+                <div class="border">
+                    <h3>Beleške</h3>
+                    <textarea rows="40" onblur="doSaveInput()" id="beleske"></textarea>
+                </div>
             </td>
         </tr>
     </table>
