@@ -36,7 +36,7 @@
             background-color: black;
             padding: 10px;
             width: 600px;
-            height: 800px;
+            height: 600px;
             overflow-y: scroll;
             font-family: monospace;
             white-space-collapse: preserve;
@@ -68,17 +68,30 @@
             padding: 10px;
             margin: 5px;
         }
+
+        .about {
+            text-align: center;
+        }
+
+        a {
+            color: green;
+
+        }
     </style>
     <script>
         require(["ui/UI"], function (uits) {
             UI = new uits.UI();
 
             window.onkeypress = function (ev) {
-                UI.keyPress(ev.key);
+                if (ev.srcElement == document.body) {
+                    UI.keyPress(ev.key);
+                }
             }
 
             window.onkeydown = function (ev) {
-                UI.keyDown(ev.key);
+                if (ev.srcElement == document.body) {
+                    UI.keyDown(ev.key);
+                }
             }
         });
 
@@ -126,7 +139,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><button onclick="UI.startBlackBox()">Pokreni</button></td>
+                            <td><button onclick="this.blur(); UI.startBlackBox()">Pokreni</button></td>
                         </tr>
                     </table>
 
@@ -134,11 +147,43 @@
 
                 <div class="border">
                     <h3>Beleške</h3>
-                    <textarea rows="40" onblur="doSaveInput()" id="beleske"></textarea>
+                    <textarea rows="20" onblur="doSaveInput()" id="beleske"></textarea>
                 </div>
+
+                <div class="about">
+                    <a href="#" onclick="uputstvo()">Uputstvo</a>
+                    &centerdot;
+                    <a href="#" onclick="about()">O programu</a>
+                </div>
+
             </td>
         </tr>
     </table>
+
+    <script>
+        function uputstvo() {
+            alert(`Ova logičko-matematička igrica se sastoji od 12 nivoa - matematičkih crnih kutija.
+
+Jedini način interakcije sa crnom kutijom je unos teksta (stringa koji se sastoji od slova i brojeva, a u nekim nivoima i razmaka) u crnom prozoru (levo). Nakon svakog unešenog stringa, dobićete povratnu informaciju, koja može biti različitog oblika.
+
+Vaš zadatak je da zaključite o čemu se radi i šta crna kutija traži od vas. To može biti unos nekog konkretnog stringa/broja ili praćenje neke tajne procedure, u zavisnosti od nivoa. Kada rešite crnu kutiju, dobićete jasno obaveštenje i šifru za narednu crnu kutiju.
+
+SAVET: zapisujte šifre za svaku rešenu crnu kutiju kako ne biste morali da ih rešavate iznova!
+`)
+        }
+
+        function about() {
+            alert(`WEB MATH BLACKBOX Version 0.69
+Copyright © saradnici TEH programa
+IS Petnica - TEH 2023
+
+Bazirano na:
+MATH BLACKBOX Verziji 0.42
+Copyright © Nikola Milosavljević
+IS Petnica - Matematika 2018
+`);
+        }
+    </script>
 
 </body>
 
