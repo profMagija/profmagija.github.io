@@ -77,13 +77,13 @@ d-i netcfg/choose_interface select enp4s0f0
 # values set here. However, setting the values still prevents the questions
 # from being shown, even if values come from dhcp.
 # d-i netcfg/get_hostname string c01
-# d-i netcfg/get_domain string os.petni.ca
+d-i netcfg/get_domain string os.petni.ca
 
 # If you want to force a hostname, regardless of what either the DHCP
 # server returns or what the reverse DNS entry for the IP is, uncomment
 # and adjust the following line.
 # d-i netcfg/hostname string c01
-d-i netcfg/domain string os.petni.ca
+#d-i netcfg/domain string os.petni.ca
 
 # Disable that annoying WEP key dialog.
 d-i netcfg/wireless_wep string
@@ -414,7 +414,7 @@ d-i grub-installer/with_other_os boolean true
 
 # Due notably to potential USB sticks, the location of the primary drive can
 # not be determined safely in general, so this needs to be specified:
-#d-i grub-installer/bootdev  string /dev/sda
+d-i grub-installer/bootdev  string /dev/sda
 # To install to the primary device (assuming it is not a USB stick):
 #d-i grub-installer/bootdev  string default
 
