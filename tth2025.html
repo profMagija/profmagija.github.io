@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-size: x-large;
+      }
+    </style>
+  </head>
+  <body>
+    Vremenska šifra: <input type="text" name="timecode" id="timecode" />
+    <button onclick="check()">Pošalji</button> <br />
+    <span id="message"></span>
+
+    <script>
+      function check() {
+        document.getElementById("message").innerText = "Proveravam šifru...";
+        setTimeout(check2, 1000);
+      }
+
+      async function check2() {
+        var timecode = document.getElementById("timecode").value;
+        var hash = await window.crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(timecode)
+        );
+        hash = Array.from(new Uint8Array(hash))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+        console.log(hash);
+        if (
+          hash ==
+          "b72c40fe2e17f52d9c6230a68ef96763bf14d605f56d4e175827f14852801038"
+        ) {
+          window.location.href = "/tth_" + timecode + ".jpg";
+        } else {
+          document.getElementById("message").innerText = "Pogrešna šifra.";
+        }
+      }
+    </script>
+  </body>
+</html>
